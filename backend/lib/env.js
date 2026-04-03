@@ -42,7 +42,7 @@ const normalizeOrigin = (value) => {
   try {
     return new URL(normalizedValue).origin;
   } catch {
-    return trimmedValue.replace(/\/$/, '');
+    return undefined;
   }
 };
 

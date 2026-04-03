@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+}
+
+:root {
+  color-scheme: dark;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  @apply bg-gray-950 text-gray-100;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at top, rgba(34, 211, 238, 0.12), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(249, 115, 22, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(2, 6, 23, 1), rgba(3, 7, 18, 1));
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}

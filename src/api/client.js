@@ -2,7 +2,7 @@ import { supabase, supabaseConfigError } from '../lib/supabase';
 
 const defaultApiBaseUrl = '/api';
 
-const localhostPattern = /^(localhost|127(?:\.\d{1,3}){3}|\[::1\])(?::\d+)?(?:\/|$)/i;
+const localhostPattern = /^(localhost|127(?:\.[0-9]{1,3}){3}|\[::1\])(?::\d+)?(?:\/|$)/i;
 
 const normalizeApiBaseUrl = (value) => {
   const trimmedValue = value?.trim();
@@ -21,9 +21,9 @@ const normalizeApiBaseUrl = (value) => {
 
   try {
     const url = new URL(normalizedValue);
-    const normalizedPath = url.pathname.replace(/\/$/, '');
+    const hasCustomPath = Boolean(url.pathname && url.pathname !== '/');
 
-    url.pathname = normalizedPath && normalizedPath !== '/' ? normalizedPath : '/api';
+    url.pathname = hasCustomPath ? url.pathname.replace(/\/$/, '') : '/api';
 
     return url.toString().replace(/\/$/, '');
   } catch {

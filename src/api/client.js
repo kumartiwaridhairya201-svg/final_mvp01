@@ -21,7 +21,7 @@ const normalizeApiBaseUrl = (value) => {
 
   try {
     const url = new URL(normalizedValue);
-    const hasCustomPath = Boolean(url.pathname && url.pathname !== '/');
+    const hasCustomPath = url.pathname && url.pathname !== '/';
 
     url.pathname = hasCustomPath ? url.pathname.replace(/\/$/, '') : '/api';
 

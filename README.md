@@ -21,7 +21,7 @@ Optional variables:
 
 - `BACKEND_PORT` to change the API port. Defaults to `4000`.
 - `VITE_API_BASE_URL` if your frontend should call a backend hosted on a different origin.
-- `FRONTEND_ORIGIN` to restrict backend CORS to one or more comma-separated origins.
+- `FRONTEND_ORIGIN` to restrict backend CORS to one or more comma-separated origins. Use your frontend origin such as `https://mymistakes.vercel.app`; paths and trailing slashes are normalized.
 
 ## Scripts
 
@@ -73,5 +73,5 @@ You do not need to physically split the repo into separate top-level frontend an
 1. Deploy Railway first.
 2. Copy the Railway backend URL.
 3. Add that Railway URL to Vercel as `VITE_API_BASE_URL`. Using either the root Railway URL or the full `/api` URL works, and including the `https://` prefix is recommended.
-4. Add your final Vercel frontend URL back into Railway as `FRONTEND_ORIGIN`.
+4. Add your final Vercel frontend URL back into Railway as `FRONTEND_ORIGIN` (for example `https://mymistakes.vercel.app`).
 5. Redeploy both once after the URLs are finalized.

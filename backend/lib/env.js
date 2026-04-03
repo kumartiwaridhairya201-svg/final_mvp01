@@ -25,6 +25,27 @@ const isValidHttpUrl = (value) => {
   }
 };
 
+const localhostHostnamePattern =
+  /^(localhost|127(?:\.[0-9]{1,3}){3}|\[::1\])(?::\d+)?(?:\/|$)/i;
+
+const normalizeOrigin = (value) => {
+  const trimmedValue = value?.trim();
+
+  if (!trimmedValue) {
+    return undefined;
+  }
+
+  const normalizedValue = /^https?:\/\//i.test(trimmedValue)
+    ? trimmedValue
+    : `${localhostHostnamePattern.test(trimmedValue) ? 'http' : 'https'}://${trimmedValue}`;
+
+  try {
+    return new URL(normalizedValue).origin;
+  } catch {
+    return undefined;
+  }
+};
+
 export const backendPort = Number.parseInt(
   process.env.PORT ?? process.env.BACKEND_PORT ?? '4000',
   10
@@ -32,7 +53,7 @@ export const backendPort = Number.parseInt(
 
 export const frontendOrigins = (process.env.FRONTEND_ORIGIN ?? '')
   .split(',')
-  .map((value) => value.trim())
+  .map(normalizeOrigin)
   .filter(Boolean);
 
 export const supabaseUrl = getConfiguredValue(

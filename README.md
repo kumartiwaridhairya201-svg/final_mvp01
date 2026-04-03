@@ -72,6 +72,6 @@ You do not need to physically split the repo into separate top-level frontend an
 
 1. Deploy Railway first.
 2. Copy the Railway backend URL.
-3. Add that URL to Vercel as `VITE_API_BASE_URL`.
+3. Add that Railway URL to Vercel as `VITE_API_BASE_URL`. Using either the root Railway URL or the full `/api` URL works, but include the `https://` prefix.
 4. Add your final Vercel frontend URL back into Railway as `FRONTEND_ORIGIN`.
 5. Redeploy both once after the URLs are finalized.

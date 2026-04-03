@@ -135,7 +135,11 @@ app.post('/api/ai/analyze-question', requireAuth, async (req, res) => {
 
 app.get('/api/mistakes', requireAuth, async (req, res) => {
   try {
-    let query = req.supabase.from('mistakes').select('*').order('created_at', { ascending: false });
+    let query = req.supabase
+      .from('mistakes')
+      .select('*')
+      .eq('user_id', req.user.id)
+      .order('created_at', { ascending: false });
 
     if (req.query.needsRevision === 'true') {
       query = query.eq('needs_revision', true);
@@ -187,7 +191,7 @@ app.post('/api/mistakes', requireAuth, upload.single('image'), async (req, res) 
 
     const { data, error } = await req.supabase
       .from('mistakes')
-      .insert([{ ...payload, image_url: imageUrl }])
+      .insert([{ ...payload, image_url: imageUrl, user_id: req.user.id }])
       .select()
       .single();
 
@@ -215,6 +219,7 @@ app.patch('/api/mistakes/:id', requireAuth, async (req, res) => {
       .from('mistakes')
       .update(updates)
       .eq('id', req.params.id)
+      .eq('user_id', req.user.id)
       .select()
       .single();
 

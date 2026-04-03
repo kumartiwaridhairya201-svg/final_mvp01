@@ -2,8 +2,37 @@ import { supabase, supabaseConfigError } from '../lib/supabase';
 
 const defaultApiBaseUrl = '/api';
 
+const localhostHostnamePattern = /^(localhost|127(?:\.[0-9]{1,3}){3}|\[::1\])(?::\d+)?(?:\/|$)/i;
+
+const normalizeApiBaseUrl = (value) => {
+  const trimmedValue = value?.trim();
+
+  if (!trimmedValue) {
+    return defaultApiBaseUrl;
+  }
+
+  if (trimmedValue.startsWith('/')) {
+    return trimmedValue.replace(/\/$/, '') || defaultApiBaseUrl;
+  }
+
+  const normalizedValue = /^https?:\/\//i.test(trimmedValue)
+    ? trimmedValue
+    : `${localhostHostnamePattern.test(trimmedValue) ? 'http' : 'https'}://${trimmedValue}`;
+
+  try {
+    const url = new URL(normalizedValue);
+    const hasExplicitPath = url.pathname && url.pathname !== '/';
+
+    url.pathname = hasExplicitPath ? url.pathname.replace(/\/$/, '') : '/api';
+
+    return url.toString().replace(/\/$/, '');
+  } catch {
+    return trimmedValue.replace(/\/$/, '');
+  }
+};
+
 export const apiBaseUrl =
-  import.meta.env.VITE_API_BASE_URL?.trim().replace(/\/$/, '') || defaultApiBaseUrl;
+  normalizeApiBaseUrl(import.meta.env.VITE_API_BASE_URL);
 
 export const backendUnavailableError =
   'Backend API is unavailable. Start the backend server or set VITE_API_BASE_URL to a running API origin.';
